@@ -1,14 +1,40 @@
 // express: api oluşturmak için kullanılan popüler bir Node.js framework'üdür.
 
 const express = require("express");
+
+// mongoose: MongoDB ile etkileşimde bulunmak için kullanılan bir Node.js kütüphanesidir.
 const mongoose = require("mongoose");
+
+// Product modelini içe aktarır. Bu model, ürün verilerini MongoDB veritabanında saklamak için kullanılır.
+const Product = require("./models/product.model");
+
 const app = express();
+
+// middleware: uygulama genelinde kullanılacak işlevlerdir. ara katman olarak da adlandırılır.
+// app.use metodu, uygulamaya ara katman (middleware) eklemek için kullanılır.
+// express.json() middleware'i, gelen isteklerin gövdesini JSON formatında ayrıştırmak için kullanılır.
+app.use(express.json());
+
 
 // app.get metodu, belirli bir rota için GET isteklerini işler.
 // req : istemciden gelen isteği temsil eder.
 // res : sunucunun istemciye göndereceği yanıtı temsil eder.
 app.get("/",(req,res)=>{
     res.send("Hello World");
+})
+
+
+app.post("/api/products",async(req,res)=>{
+    console.log(req.body);
+
+    try {
+         const product = await Product.create(req.body);
+         res.status(201).json(product);
+
+    }catch (error) {
+        res.status(500).json({message: error.message});
+    }
+
 })
 
 
