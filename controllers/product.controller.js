@@ -7,6 +7,16 @@
 
 const Product = require("../models/product.model");
 
+const createProduct = async (req, res) => {
+  console.log("Create product");
+  try {
+    const product = await Product.create(req.body);
+    res.status(201).json(product);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 const getProducts = async (req, res) => {
   console.log("Get all products");
   try {
@@ -35,7 +45,7 @@ const getProductById = async (req, res) => {
 
 const updateProduct = async (req, res) => {
   console.log("Update product");
-    try {
+  try {
     const { id } = req.params;
     const product = await Product.findByIdAndUpdate(id, req.body);
 
@@ -46,16 +56,16 @@ const updateProduct = async (req, res) => {
     res.status(200).json(updatedProduct);
   } catch (error) {
     res.status(500).json({ message: error.message });
-  } 
+  }
 };
 
 const deleteProduct = async (req, res) => {
   console.log("Delete product");
-    try {
+  try {
     const { id } = req.params;
-    const product = await Product.findByIdAndDelete(id);    
+    const product = await Product.findByIdAndDelete(id);
     if (!product) {
-        return res.status(404).json({ message: "Product not found" });
+      return res.status(404).json({ message: "Product not found" });
     }
 
     res.status(200).json({ message: "Product deleted successfully" });
@@ -64,5 +74,10 @@ const deleteProduct = async (req, res) => {
   }
 };
 
-
-module.exports = { getProducts, getProductById, updateProduct, deleteProduct };
+module.exports = {
+  createProduct,
+  getProducts,
+  getProductById,
+  updateProduct,
+  deleteProduct,
+};

@@ -8,6 +8,7 @@
 const express = require("express");
 
 const {
+  createProduct,
   getProducts,
   getProductById,
   deleteProduct,
@@ -16,21 +17,18 @@ const {
 
 const router = express.Router();
 
+router.post("/", createProduct);
 
 // Tüm ürünleri getiren route
 router.get("/", getProducts);
 
-
 // Belirli bir ürünü ID'ye göre getiren route
 router.get("/:id", getProductById);
-
 
 // Belirli bir ürünü ID'ye göre güncelleyen route
 router.put("/:id", updateProduct);
 
-
 // Belirli bir ürünü ID'ye göre silen route
 router.delete("/:id", deleteProduct);
-
 
 module.exports = router;
