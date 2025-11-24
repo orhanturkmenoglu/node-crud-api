@@ -15,49 +15,110 @@ const app = express();
 // express.json() middleware'i, gelen isteklerin gövdesini JSON formatında ayrıştırmak için kullanılır.
 app.use(express.json());
 
-
 // app.get metodu, belirli bir rota için GET isteklerini işler.
 // req : istemciden gelen isteği temsil eder.
 // res : sunucunun istemciye göndereceği yanıtı temsil eder.
-app.get("/",(req,res)=>{
-    res.send("Hello World");
-})
+app.get("/", (req, res) => {
+  res.send("Hello World");
+});
 
+// Tüm ürünleri getiren API endpoint'i
+// async/await yapısı, asenkron işlemleri daha okunabilir hale getirmek için kullanılır.
+// try/catch bloğu, hata yönetimi için kullanılır.
+// Burada Product.find({}) metodu, MongoDB veritabanındaki tüm ürünleri getirir.
+// find metodu, belirtilen kriterlere uyan belgeleri bulmak için kullanılır. Boş bir nesne ({}) tüm belgeleri getirir.
+app.get("/api/products", async (req, res) => {
+  console.log("Get all products");
+  try {
+    const products = await Product.find({});
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
-app.post("/api/products",async(req,res)=>{
-    console.log(req.body);
+// Belirli bir ürünü ID'ye göre getiren API endpoint'i
+app.get("/api/products/:id", async (req, res) => {
+  console.log("Get single product");
 
-    try {
-         const product = await Product.create(req.body);
-         res.status(201).json(product);
+  try {
+    const { id } = req.params;
+    const product = await Product.findById(id);
+    res.status(200).json(product);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
-    }catch (error) {
-        res.status(500).json({message: error.message});
+// Belirli bir ürünü ID'ye göre güncelleyen API endpoint'i
+app.put("/api/products/:id", async (req, res) => {
+  console.log("Update product");
+
+  try {
+    const { id } = req.params;
+    const product = await Product.findByIdAndUpdate(id, req.body);
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
     }
 
-})
+    const updatedProduct = await Product.findById(id);
+    res.status(200).json(updatedProduct);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
+// Belirli bir ürünü ID'ye göre silen API endpoint'i
+app.delete("/api/products/:id", async (req, res) => {
+  console.log("Delete product");
+
+  try {
+    const { id } = req.params;
+    const product = await Product.findByIdAndDelete(id);
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    res.status(200).json({ message: "Product deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Yeni bir ürün ekleyen API endpoint'i
+app.post("/api/products", async (req, res) => {
+  console.log(req.body);
+
+  try {
+    const product = await Product.create(req.body);
+    res.status(201).json(product);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
 // mongoose.connect metodu, MongoDB veritabanına bağlanmak için kullanılır.
 // Bağlantı başarılı olursa then bloğu çalışır, başarısız olursa catch bloğu çalışır.
 // Bağlantı dizesi, MongoDB sunucusunun adresini ve kimlik doğrulama bilgilerini içerir.
 // Burada "orhantrkmn749_db_user" kullanıcı adı ve "bAEBArjOH5pHuigH" şifresi kullanılmıştır.
 // then bloğunda, veritabanına bağlandıktan sonra sunucunun 5173 portunda dinlemeye başlaması sağlanır.
-mongoose.connect("mongodb+srv://orhantrkmn749_db_user:bAEBArjOH5pHuigH@backend.mm1wtp7.mongodb.net/?appName=Backend")
-.then(()=>{
-     app.listen(5173,()=>{
-        console.log("Database connected and Server is running on port 5173");
+mongoose
+  .connect(
+    "mongodb+srv://orhantrkmn749_db_user:bAEBArjOH5pHuigH@backend.mm1wtp7.mongodb.net/Node_API?appName=Backend"
+  )
+  .then(() => {
+    app.listen(5173, () => {
+      console.log("Database connected and Server is running on port 5173");
     });
-})
-.catch((error)=>{
+  })
+  .catch((error) => {
     console.log("Database connection failed:", error);
-});
-
-
+  });
 
 // listen metodu, belirli bir port üzerinde gelen istekleri dinlemeye başlar.
 /* app.listen(5173,()=>{
     console.log("Server is running on port 5173");
 })
  */
-
