@@ -8,6 +8,9 @@ const mongoose = require("mongoose");
 // Product modelini içe aktarır. Bu model, ürün verilerini MongoDB veritabanında saklamak için kullanılır.
 const Product = require("./models/product.model");
 
+// product route dosyasını içe aktarır.
+const productRoute = require("./routes/product.route");
+
 const app = express();
 
 // middleware: uygulama genelinde kullanılacak işlevlerdir. ara katman olarak da adlandırılır.
@@ -15,14 +18,29 @@ const app = express();
 // express.json() middleware'i, gelen isteklerin gövdesini JSON formatında ayrıştırmak için kullanılır.
 app.use(express.json());
 
+// express.urlencoded() middleware'i, URL kodlu verileri ayrıştırmak için kullanılır. request olarak da form verilerini işler,
+//  yanıt olarak form verilerini işler.
+app.use(express.urlencoded({ extended: true }));
+
+
+// product route dosyasını içe aktarır. Bu, ürünlerle ilgili tüm route işlemlerini içerir.
+// "/api/products" yolu ile productRoute dosyasındaki route'ları ilişkilendirir.
+app.use("/api/products", productRoute);
+
+
+
 // app.get metodu, belirli bir rota için GET isteklerini işler.
 // req : istemciden gelen isteği temsil eder.
 // res : sunucunun istemciye göndereceği yanıtı temsil eder.
+
 app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
-// Tüm ürünleri getiren API endpoint'i
+ 
+// ************************* routes dosyasına taşındı PRODUCT ENDPOINTLER *************************
+
+/* // Tüm ürünleri getiren API endpoint'i
 // async/await yapısı, asenkron işlemleri daha okunabilir hale getirmek için kullanılır.
 // try/catch bloğu, hata yönetimi için kullanılır.
 // Burada Product.find({}) metodu, MongoDB veritabanındaki tüm ürünleri getirir.
@@ -98,7 +116,11 @@ app.post("/api/products", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+// ************************* routes dosyasına taşındı PRODUCT ENDPOINTLER *************************
 
+
+
+ */
 // mongoose.connect metodu, MongoDB veritabanına bağlanmak için kullanılır.
 // Bağlantı başarılı olursa then bloğu çalışır, başarısız olursa catch bloğu çalışır.
 // Bağlantı dizesi, MongoDB sunucusunun adresini ve kimlik doğrulama bilgilerini içerir.
