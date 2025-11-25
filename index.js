@@ -124,7 +124,6 @@ app.post("/api/products", async (req, res) => {
 // mongoose.connect metodu, MongoDB veritabanına bağlanmak için kullanılır.
 // Bağlantı başarılı olursa then bloğu çalışır, başarısız olursa catch bloğu çalışır.
 // Bağlantı dizesi, MongoDB sunucusunun adresini ve kimlik doğrulama bilgilerini içerir.
-// Burada "orhantrkmn749_db_user" kullanıcı adı ve "bAEBArjOH5pHuigH" şifresi kullanılmıştır.
 // then bloğunda, veritabanına bağlandıktan sonra sunucunun 5173 portunda dinlemeye başlaması sağlanır.
 mongoose
   .connect(process.env.MONGODB_URL)
