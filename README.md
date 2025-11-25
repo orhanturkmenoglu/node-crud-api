@@ -1,7 +1,7 @@
 # Node CRUD API
 
-Bu proje, **Node.js, Express ve MongoDB (Mongoose)** kullanılarak geliştirilmiş basit bir CRUD API örneğidir.  
-Ürün yönetimi (Products) üzerine kuruludur ve temel CRUD operasyonlarını içerir: oluşturma, okuma, güncelleme ve silme.
+Bu proje, **Node.js**, **Express** ve **MongoDB (Mongoose)** kullanılarak geliştirilmiş bir CRUD API örneğidir.  
+Ürün yönetimi (Products) üzerine kuruludur ve temel CRUD operasyonlarını destekler: oluşturma, okuma, güncelleme ve silme.
 
 ---
 
@@ -9,7 +9,7 @@ Bu proje, **Node.js, Express ve MongoDB (Mongoose)** kullanılarak geliştirilmi
 
 - Node.js ve Express tabanlı REST API
 - MongoDB ile veri yönetimi
-- MVC mimarisi: `models`, `controllers`, `routes`
+- MVC mimarisi (`models`, `controllers`, `routes`)
 - CRUD endpointleri:
   - `GET /api/products` → Tüm ürünleri getirir
   - `GET /api/products/:id` → Belirli bir ürünü getirir
@@ -38,26 +38,32 @@ node-crud-api/
 ## ⚙️ Kurulum
 
 1. Repository’yi klonlayın:
+
 ```bash
-git clone https://github.com/kullaniciAdi/node-crud-api.git
+git clone https://github.com/orhanturkmenoglu/node-crud-api.git
 cd node-crud-api
 
 ---
 
-## ⚙️ Bağımlılıkları yükleyin
+## Bağımlılıkları yükleyin:
 
 ```bash
 npm install
 
 ---
 
-
-## ⚙️ Geliştirme Sırasında nodemon sunucu çalıştırmak için
+## Geliştirme sırasında nodemon ile sunucuyu çalıştırmak için:
 
 ```bash
 npm run dev
 
-## Not: package.json içinde "dev": "nodemon index.js" script’i olmalı.
+Not: package.json içinde "dev": "nodemon index.js" script’i olmalıdır.
 
+---
+
+## Normal şekilde Node.js ile çalıştırmak için:
+
+```bash
+npm start
 
 
