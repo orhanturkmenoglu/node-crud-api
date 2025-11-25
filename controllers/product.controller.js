@@ -9,8 +9,15 @@ const Product = require("../models/product.model");
 
 const createProduct = async (req, res) => {
   console.log("Create product");
+   const {name, quantity, price, image} = req.body;
+
   try {
-    const product = await Product.create(req.body);
+    const product = await Product.create({
+      name,
+      quantity,
+      price,
+      image,
+    });
     res.status(201).json(product);
   } catch (error) {
     res.status(500).json({ message: error.message });
