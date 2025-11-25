@@ -11,6 +11,10 @@ const Product = require("./models/product.model");
 // product route dosyasını içe aktarır.
 const productRoute = require("./routes/product.route");
 
+const dotenv = require("dotenv");
+
+dotenv.config();
+
 const app = express();
 
 // middleware: uygulama genelinde kullanılacak işlevlerdir. ara katman olarak da adlandırılır.
@@ -22,12 +26,9 @@ app.use(express.json());
 //  yanıt olarak form verilerini işler.
 app.use(express.urlencoded({ extended: true }));
 
-
 // product route dosyasını içe aktarır. Bu, ürünlerle ilgili tüm route işlemlerini içerir.
 // "/api/products" yolu ile productRoute dosyasındaki route'ları ilişkilendirir.
 app.use("/api/products", productRoute);
-
-
 
 // app.get metodu, belirli bir rota için GET isteklerini işler.
 // req : istemciden gelen isteği temsil eder.
@@ -37,7 +38,6 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
- 
 // ************************* routes dosyasına taşındı PRODUCT ENDPOINTLER *************************
 
 /* // Tüm ürünleri getiren API endpoint'i
@@ -127,12 +127,12 @@ app.post("/api/products", async (req, res) => {
 // Burada "orhantrkmn749_db_user" kullanıcı adı ve "bAEBArjOH5pHuigH" şifresi kullanılmıştır.
 // then bloğunda, veritabanına bağlandıktan sonra sunucunun 5173 portunda dinlemeye başlaması sağlanır.
 mongoose
-  .connect(
-    "mongodb+srv://orhantrkmn749_db_user:bAEBArjOH5pHuigH@backend.mm1wtp7.mongodb.net/Node_API?appName=Backend"
-  )
+  .connect(process.env.MONGODB_URL)
   .then(() => {
-    app.listen(5173, () => {
-      console.log("Database connected and Server is running on port 5173");
+    console.log("Database connected successfully");
+
+    app.listen(process.env.PORT || 5173, () => {
+      console.log(`Server is running on port ${process.env.PORT || 5173}`);
     });
   })
   .catch((error) => {
